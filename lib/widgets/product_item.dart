@@ -39,7 +39,15 @@ class ProductItem extends StatelessWidget {
                 product.isFavourite ? Icons.favorite : Icons.favorite_border,
               ),
               onPressed: () {
-                product.toggleFavouriteStatus();
+                try {
+                  product.toggleFavouriteStatus();
+                } catch (error) {
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Network error'),
+                    ),
+                  );
+                }
               },
               color: Theme.of(context).accentColor,
             ),

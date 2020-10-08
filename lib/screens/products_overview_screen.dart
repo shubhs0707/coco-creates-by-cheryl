@@ -30,7 +30,22 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
     });
     Provider.of<Products>(context, listen: false)
         .fetchAndSetProducts()
-        .then((value) {
+        .catchError((error) {
+      showDialog<Null>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('An error occurred'),
+          content: Text('Something went wrong :('),
+          actions: [
+            FlatButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+                child: Text('OK'))
+          ],
+        ),
+      );
+    }).then((value) {
       setState(() {
         _isLoading = false;
       });

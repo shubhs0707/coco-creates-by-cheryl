@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import './product.dart';
 
@@ -47,16 +49,31 @@ class Products with ChangeNotifier {
   }
 
   void addProduct(Product product) {
-    final newProduct = Product(
-      description: product.description,
-      id: DateTime.now().toString(),
-      imageUrl: product.imageUrl,
-      price: product.price,
-      title: product.title,
-    );
-    _items.add(newProduct);
-    // _items.insert(0, newProduct); //to add at the beginning of list
-    notifyListeners();
+    const url = 'https://coco-creates.firebaseio.com/products.json';
+    http
+        .post(
+      url,
+      body: json.encode({
+        'title': product.title,
+        'description': product.description,
+        'imageUrl': product.imageUrl,
+        'price': product.price,
+        'isFavourite': product.isFavourite,
+      }),
+    )
+        .then((value) {
+      print(json.decode(value.body));
+      final newProduct = Product(
+        description: product.description,
+        id: json.decode(value.body)['name'],
+        imageUrl: product.imageUrl,
+        price: product.price,
+        title: product.title,
+      );
+      _items.add(newProduct);
+      // _items.insert(0, newProduct); //to add at the beginning of list
+      notifyListeners();
+    });
   }
 
   void deleteProduct(String id) {

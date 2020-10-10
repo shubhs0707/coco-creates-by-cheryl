@@ -43,7 +43,8 @@ class Products with ChangeNotifier {
   ];
 
   final String authToken;
-  Products(this.authToken, this._items);
+  final String userId;
+  Products(this.authToken, this.userId, this._items);
 
   List<Product> get items {
     return [..._items];
@@ -53,9 +54,11 @@ class Products with ChangeNotifier {
     return _items.firstWhere((element) => element.id == id);
   }
 
-  Future<void> fetchAndSetProducts() async {
-    final url =
-        'https://coco-creates.firebaseio.com/products.json?auth=$authToken';
+  Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
+    final filterString =
+        filterByUser ? '&orderBy="creatorId"&equalTo="$userId' : '';
+    var url =
+        'https://coco-creates.firebaseio.com/products.json?auth=$authToken$filterString"';
     try {
       final response = await http.get(url);
       // print(response.body);
@@ -63,6 +66,11 @@ class Products with ChangeNotifier {
       if (extractedData == null) {
         return;
       }
+      url =
+          'https://coco-creates.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
+      final favouriteResponse = await http.get(url);
+      final favouriteData = json.decode(favouriteResponse.body);
+
       final List<Product> loadedProducts = [];
       extractedData.forEach((key, value) {
         loadedProducts.add(Product(
@@ -71,7 +79,8 @@ class Products with ChangeNotifier {
           imageUrl: value['imageUrl'],
           title: value['title'],
           price: value['price'],
-          isFavourite: value['isFavourite'],
+          isFavourite:
+              favouriteData == null ? false : favouriteData[key] ?? false,
         ));
       });
       _items = loadedProducts;
@@ -93,7 +102,7 @@ class Products with ChangeNotifier {
           'description': product.description,
           'imageUrl': product.imageUrl,
           'price': product.price,
-          'isFavourite': product.isFavourite,
+          'creatorId': userId,
         }),
       );
       print(json.decode(response.body));

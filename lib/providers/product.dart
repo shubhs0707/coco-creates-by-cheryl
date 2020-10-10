@@ -25,18 +25,18 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleFavouriteStatus(String token) async {
+  Future<void> toggleFavouriteStatus(String token, String userId) async {
     final url =
-        'https://coco-creates.firebaseio.com/products/$id.json?auth=$token';
+        'https://coco-creates.firebaseio.com/userFavorites/$userId/$id.json?auth=$token';
     final oldStatus = isFavourite;
     isFavourite = !isFavourite;
     notifyListeners();
 
     try {
-      final response = await http.patch(url,
-          body: json.encode({
-            'isFavourite': isFavourite,
-          }));
+      final response = await http.put(
+        url,
+        body: json.encode(isFavourite),
+      );
       notifyListeners();
       if (response.statusCode >= 400) {
         _setfavValue(oldStatus);

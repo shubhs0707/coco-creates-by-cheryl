@@ -43,7 +43,8 @@ class ProductItem extends StatelessWidget {
               ),
               onPressed: () {
                 try {
-                  product.toggleFavouriteStatus(authData.token);
+                  product.toggleFavouriteStatus(
+                      authData.token, authData.userId);
                 } catch (error) {
                   Scaffold.of(context).showSnackBar(
                     SnackBar(
@@ -58,8 +59,8 @@ class ProductItem extends StatelessWidget {
           title: Text(
             product.title,
             textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: Theme.of(context).textTheme.headline6.fontSize),
+            // style: TextStyle(
+            //     fontSize: Theme.of(context).textTheme.headline6.fontSize),
           ),
           trailing: Consumer<Cart>(
             builder: (ctx, cart, _) => IconButton(

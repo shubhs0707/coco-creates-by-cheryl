@@ -52,7 +52,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
             );
           } else {
             if (dataSnapshot.error != null) {
-              return SnackBar(content: Text('Something went wrong'));
+              return Center(child: Text('Something went wrong'));
             } else {
               return Consumer<Orders>(
                 builder: (context, ordersData, child) {

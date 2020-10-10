@@ -1,5 +1,10 @@
-import 'package:flutter/material.dart';
 import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/auth.dart';
+import '../models/http_exception.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -101,19 +106,60 @@ class _AuthCardState extends State<AuthCard> {
     'password': '',
   };
 
-  void _submit() {
+  void _showErrorDialog(String message) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text('Error Occurred :('),
+              content: Text(message),
+              actions: [
+                FlatButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('OK'),
+                ),
+              ],
+            ));
+  }
+
+  Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
       return;
     }
+
     _formKey.currentState.save();
     setState(() {
       _isLoading = true;
     });
-    if (_authMode == AuthMode.Login) {
-      //Let User In
-    } else {
-      // Let user signup
+
+    try {
+      if (_authMode == AuthMode.Login) {
+        await Provider.of<Auth>(context, listen: false).login(
+          _authData['email'],
+          _authData['password'],
+        );
+      } else {
+        await Provider.of<Auth>(context, listen: false).signup(
+          _authData['email'],
+          _authData['password'],
+        );
+      }
+    } on HttpException catch (error) {
+      var errorMessage = "Authentication Failed";
+      if (error.toString().contains('EMAIL_NOT_FOUND')) {
+        errorMessage = 'Email Not Found';
+      } else if (error.toString().contains('INVALID_PASSWORD')) {
+        errorMessage = "Invalid Password";
+      } else if (error.toString().contains('USER_DISABLED')) {
+        errorMessage = "User Disabled";
+      } else {
+        errorMessage = error.toString();
+      }
+      _showErrorDialog(errorMessage);
+    } catch (error) {
+      const errorMessage = "Could Not Authenticate. Something went wrong";
+      _showErrorDialog(errorMessage);
     }
+
     setState(() {
       _isLoading = false;
     });

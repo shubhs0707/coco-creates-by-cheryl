@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/product.dart';
 import '../providers/cart.dart';
+import '../providers/auth.dart';
 import '../screens/product_detail_screen.dart';
 
 class ProductItem extends StatelessWidget {
@@ -15,6 +16,8 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context, listen: false);
+    final authData = Provider.of<Auth>(context, listen: false);
+
     // final cart = Provider.of<Cart>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -40,7 +43,7 @@ class ProductItem extends StatelessWidget {
               ),
               onPressed: () {
                 try {
-                  product.toggleFavouriteStatus();
+                  product.toggleFavouriteStatus(authData.token);
                 } catch (error) {
                   Scaffold.of(context).showSnackBar(
                     SnackBar(
@@ -55,6 +58,8 @@ class ProductItem extends StatelessWidget {
           title: Text(
             product.title,
             textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: Theme.of(context).textTheme.headline6.fontSize),
           ),
           trailing: Consumer<Cart>(
             builder: (ctx, cart, _) => IconButton(

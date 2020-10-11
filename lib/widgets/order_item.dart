@@ -33,39 +33,42 @@ class _OrderItemState extends State<OrderItem> {
               },
             ),
           ),
-          if (_expanded)
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 15,
-                vertical: 4,
-              ),
-              height: min(widget.order.products.length * 20.0 + 10, 100),
-              child: ListView(
-                children: widget.order.products
-                    .map(
-                      (e) => Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            e.title,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+          AnimatedContainer(
+            duration: Duration(milliseconds: 400),
+            curve: Curves.ease,
+            padding: EdgeInsets.symmetric(
+              horizontal: 15,
+              vertical: 4,
+            ),
+            height: _expanded
+                ? min(widget.order.products.length * 20.0 + 10, 100)
+                : 0,
+            child: ListView(
+              children: widget.order.products
+                  .map(
+                    (e) => Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          e.title,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
-                          Text(
-                            '${e.quantity} x ₹${e.price}',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.grey,
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                    .toList(),
-              ),
-            )
+                        ),
+                        Text(
+                          '${e.quantity} x ₹${e.price}',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.grey,
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                  .toList(),
+            ),
+          )
         ],
       ),
     );

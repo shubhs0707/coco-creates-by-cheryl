@@ -42,5 +42,5 @@ class CustomPageTransitionBuilder extends PageTransitionsBuilder {
       opacity: animation,
       child: child,
     );
-  }c
+  }
 }

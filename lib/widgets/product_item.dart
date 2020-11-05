@@ -55,7 +55,7 @@ class ProductItem extends StatelessWidget {
                   product.toggleFavouriteStatus(
                       authData.token, authData.userId);
                 } catch (error) {
-                  Scaffold.of(context).showSnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Network error'),
                     ),
@@ -78,8 +78,8 @@ class ProductItem extends StatelessWidget {
                   : Icon(Icons.shopping_cart_outlined),
               onPressed: () {
                 cart.addItem(product.id, product.price, product.title);
-                Scaffold.of(context).hideCurrentSnackBar();
-                Scaffold.of(context).showSnackBar(
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
                       'Item Added to Cart!',

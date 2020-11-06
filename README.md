@@ -1,12 +1,8 @@
-# coco_creates_by_cheryl
+# Coco Creates By Cheryl
 
-Lovely Handcrafted items
+Lovely Handcrafted items ❤️❤️❤️
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
+**Coco Creates by Cheryl** is a sample Flutter app 📱 built to demonstrate use of *Firebase and Flutter* tools. Dedicated to all Fluuter Developers with ❤️. 
 
 - [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)

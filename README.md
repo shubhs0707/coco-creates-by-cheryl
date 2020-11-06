@@ -4,7 +4,7 @@ Lovely Handcrafted items ❤️❤️❤️
 
 **Coco Creates by Cheryl** is a sample Flutter app 📱 built to demonstrate use of *Firebase and Flutter* tools. Dedicated to all Fluuter Developers with ❤️. 
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Download APK](https://github.com/shubhs0707/coco-creates-by-cheryl/raw/master/app-release.apk)
 - [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
 For help getting started with Flutter, view our
